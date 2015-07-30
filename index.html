@@ -1,12 +1,52 @@
 <html>    
     <head>
-        <title>The Murlocs raid team</title>
+        <title>The MQTT demp</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />        
+        <script type="text/javascript" src="mqttws31.js"></script>
+        <script type="text/javascript" src="jquery.min.js"></script>
         <script type="text/javascript" src="sprintf.js"></script>
 
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
+        <script>
+            client = new Paho.MQTT.Client(window.location.hostname, 9001, "web_" + parseInt(Math.random() * 1000, 10));
+            client.onConnectionLost = onConnectionLost;
+            client.onMessageArrived = onMessageArrived;
+            client.connect({onSuccess:onConnect});
+
+            function onPush(topic,m) {
+                message = new Paho.MQTT.Message(m);
+                message.destinationName = topic;
+                client.send(message); 
+            };
+            function onConnect() {
+                // Once a connection has been made, make a subscription and send a message.
+                console.log("onConnect");
+                client.subscribe("#");
+                message = new Paho.MQTT.Message("Hello");
+                message.destinationName = "World";
+                client.send(message); 
+            };
+            function onConnectionLost(responseObject) {
+                if (responseObject.errorCode !== 0)
+                console.log("onConnectionLost:"+responseObject.errorMessage);
+            };
+            function onMessageArrived(message) {
+                var myDate=new Date();
+                document.getElementById('Status').innerHTML="<h2>"+
+                    message.destinationName+'</h2>'+
+                    message.payloadString+"<p>"+myDate.getTime();
+                    //client.disconnect();
+                 if(document.getElementById(message.destinationName)){
+                    document.getElementById(message.destinationName).innerHTML=
+                      "<h2>Destination: "+message.destinationName+"</h2><p>"+
+                      message.payloadString+"<p>";
+                      // TODO +myDate.getTime();
+                 }
+
+            };
+</script>
         <div id ="header-wrapper">
             <div id="header">
             </div>
@@ -14,42 +54,28 @@
         
         <div id="content">
             <div id='+toon+' class="post">
-                <h2>iHeader1</h2>
+                <h2>MQTT Demo</h2>
+                <div id=demo>
+                     <button onclick='onPush("World","xxx")'>Hello World</button><br>
+                     <button onclick='onPush("/starfader/","fade ON 1")'>Fade on Slow</button>
+                     <button onclick='onPush("/starfader/","fade OFF 1")'>Fade off slow</button><br>
+                     <button onclick='onPush("/starfader/","fade ON 40")'>Fade on Medium</button>
+                     <button onclick='onPush("/starfader/","fade OFF 40")'>Fade off Medium</button>
+                </div>
             </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader2</h2>
+            <div id="/starfader/" class="post">
             </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader3</h2>
-            </div>
-            <div id='+toon+' class="post">
+            <div id='World' class="post">
                 <h2>iHeader4</h2>
             </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader5</h2>
+            <div id='FunTechHouse/tellstick/oregon_225' class="post">
+                <h2>hm</h2>
             </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader6</h2>
+            <div id=Status class="post">
+                <h2>iHeader3</h2>
             </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader7</h2>
-            </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader8</h2>
-            </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader9</h2>
-            </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader10</h2>
-            </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader11</h2>
-            </div>
-            <div id='+toon+' class="post">
-                <h2>iHeader12</h2>
-            </div>
-
         </div>
+        <script>
+        </script>
     </body>
 </html>
