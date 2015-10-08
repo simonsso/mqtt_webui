@@ -43,8 +43,17 @@
                       "<h2>Destination: "+message.destinationName+"</h2><p>"+
                       message.payloadString+"<p>";
                       // TODO +myDate.getTime();
+                 }else{
+                     for( i=0; i<10 ; i++){
+                        if(x=document.getElementById("i"+i)){
+                           if(x.innerHTML==""){
+                              x.innerHTML="<div id="+message.destinationName+">"+
+                                          "<h2>Welcome:"+message.destinationName+"</h2><p>"+message.payloadString+"</div>";
+                              return;
+                           }
+                        }
+                     }
                  }
-
             };
 </script>
         <div id ="header-wrapper">
@@ -53,7 +62,7 @@
         </div>    
         
         <div id="content">
-            <div id='+toon+' class="post">
+            <div id=buttonlist>
                 <h2>MQTT Demo</h2>
                 <div id=demo>
                      <button onclick='onPush("World","xxx")'>Hello World</button><br>
@@ -79,20 +88,19 @@
                      <button onclick='onPush("/starfader/","fade OFF 0")'>Zero</button><br>
                 </div>
             </div>
-            <div id="/starfader/" class="post">
-            </div>
-            <div id='World' class="post">
-                <h2>iHeader4</h2>
-            </div>
-            <div id='FunTechHouse/tellstick/oregon_254' class="post">
-                <h2>hm</h2>
-            </div>
-            <div id='/starfader_status/' class="post">
-                <h2>hm</h2>
-            </div>
             <div id=Status class="post">
                 <h2>iHeader3</h2>
             </div>
+            <div id=i0 class="post"></div>
+            <div id=i1 class="post"></div>
+            <div id=i2 class="post"></div>
+            <div id=i3 class="post"></div>
+            <div id=i4 class="post"></div>
+            <div id=i5 class="post"></div>
+            <div id=i6 class="post"></div>
+            <div id=i7 class="post"></div>
+            <div id=i8 class="post"></div>
+            <div id=i9 class="post"></div>
         </div>
         <script>
         </script>
