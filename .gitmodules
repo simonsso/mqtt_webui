@@ -1,3 +1,9 @@
 [submodule "Chart.js"]
 	path = Chart.js
 	url = git@github.com:nnnick/Chart.js.git
+[submodule "xy.js"]
+	path = xy.js
+	url = https://github.com/thunder9/xy.js.git
+[submodule "d3"]
+	path = d3
+	url = git@github.com:mbostock/d3.git

@@ -4,7 +4,7 @@
 <canvas id="myChart" width="800" height="400"></canvas>
 <script>
 var xmlhttp = new XMLHttpRequest();
-var url = "data.php";
+var url = "data.php?mode=line";
 xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         var myArr = JSON.parse(xmlhttp.responseText);

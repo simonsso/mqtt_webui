@@ -1,0 +1,69 @@
+<html>
+<script src="xy.js/dist/xy.js"></script>
+
+<canvas id="myChart" width="800" height="400"></canvas>
+<form>
+<select id=selectmenu onChange=DropDown()>
+  <option value=1>Badrum</option>
+  <option value=2>Salen</option>
+  <option value=4>Sovrum</option>
+  <option value=5>K&auml;llare</option>
+</select>
+<input onChange=Update() type="checkbox" id="showtemp" value=1 checked>Show Temperature
+<input onChange=Update() type="checkbox" id="showhum" value=1 checked>Show Humidity
+</form>
+<script>
+function Update(){
+  myFunction(currentdata);
+}
+function DropDown(){
+  var select=document.getElementById("selectmenu") 
+  var url = "data.php?mode=xy&sensor="+select.value;
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
+}
+var xmlhttp = new XMLHttpRequest();
+var url = "data.php?mode=xy&sensor=1";
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        myFunction(myArr);
+    }
+};
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+var currentdata;
+function myFunction(external){
+   currentdata=external;
+   var datasets=[];
+   if(document.getElementById("showtemp").checked){
+      datasets.push(
+            {
+               lineColor : 'rgba(220,220,220,1)',
+               pointColor : 'rgba(220,220,220,1)',
+               pointStrokeColor : 'rgba(220,220,220,1)',
+               data : external.temperature
+            });
+   }
+   if(document.getElementById("showhum").checked){
+      datasets.push(
+         {
+               lineColor : 'rgba(151,187,205,1)',
+               pointColor : 'rgba(151,187,205,1)',
+               pointStrokeColor : 'rgba(151,187,205,1)',
+               data : external.humidity
+          });
+   }
+
+   // Get the context of the canvas element we want to select
+   var ctx = document.getElementById("myChart").getContext("2d");
+   var xy = new Xy(ctx);
+   xy.formatXLabel = function(unix_timestamp) {
+      return new Date(unix_timestamp * 1000).toLocaleTimeString();
+   }
+   xy.options.pointCircleRadius=2;
+   xy.options.smooth=0;
+   xy.draw(datasets);
+}
+</script>
+</html>
